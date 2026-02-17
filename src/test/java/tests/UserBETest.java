@@ -3,6 +3,8 @@ package tests;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import models.AddressModel;
+import models.RequestUserModel;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,21 +21,8 @@ public class UserBETest {
         request.header("Content-Type", "application/json");
         request.header("Accept", "application/json");
 
-        String requestBody = "{\n" +
-                "  \"first_name\": \"Teodora\",\n" +
-                "  \"last_name\": \"Doe\",\n" +
-                "  \"address\": {\n" +
-                "    \"street\": \"Street 1\",\n" +
-                "    \"city\": \"City\",\n" +
-                "    \"state\": \"State\",\n" +
-                "    \"country\": \"Country\",\n" +
-                "    \"postal_code\": \"1234AA\"\n" +
-                "  },\n" +
-                "  \"phone\": \"0987654321\",\n" +
-                "  \"dob\": \"1970-01-01\",\n" +
-                "  \"password\": \"SuperSecure@123\",\n" +
-                "  \"email\": \"teo1@doeexample.com\"\n" +
-                "}";
+        AddressModel addressModel = new AddressModel("Street 1", "City", "State", "Country", "1234AA");
+        RequestUserModel requestBody = new RequestUserModel("Teodora", "Doe", addressModel, "0987654321", "1970-01-01", "SuperSecure@123", "teo1@doeexample.com");
 
         request.body(requestBody);
         Response response = request.post("/users/register");
@@ -46,10 +35,10 @@ public class UserBETest {
         driver.manage().window().maximize();
 
         WebElement emailElement = driver.findElement(By.id("email"));
-        emailElement.sendKeys("teo1@doeexample.com");
+        emailElement.sendKeys(requestBody.getEmail());
 
         WebElement passwordElement = driver.findElement(By.id("password"));
-        passwordElement.sendKeys("SuperSecure@123");
+        passwordElement.sendKeys(requestBody.getPassword());
 
         WebElement loginButton = driver.findElement(By.xpath("//input[@type='submit']"));
         loginButton.click();
