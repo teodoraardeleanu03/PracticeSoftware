@@ -1,11 +1,21 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AddressModel {
+    @JsonProperty("street")
     private String street;
+    @JsonProperty("city")
     private String city;
+    @JsonProperty("state")
     private String state;
+    @JsonProperty("country")
     private String country;
+    @JsonProperty("postal_code")
     private String postal_code;
+
+    public AddressModel() {
+    }
 
     public AddressModel(String street, String city, String state, String country, String postal_code) {
         this.street = street;

@@ -5,14 +5,12 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import models.AddressModel;
 import models.RequestUserModel;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.LoginPage;
+import sharedData.SharedData;
 
-public class UserBETest {
+public class UserBETest extends SharedData {
 
     @Test
     public void userTest() {
@@ -30,17 +28,7 @@ public class UserBETest {
         response.body().prettyPrint();
         Assert.assertEquals(response.getStatusCode(), 201);
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.practicesoftwaretesting.com/auth/login");
-        driver.manage().window().maximize();
-
-        WebElement emailElement = driver.findElement(By.id("email"));
-        emailElement.sendKeys(requestBody.getEmail());
-
-        WebElement passwordElement = driver.findElement(By.id("password"));
-        passwordElement.sendKeys(requestBody.getPassword());
-
-        WebElement loginButton = driver.findElement(By.xpath("//input[@type='submit']"));
-        loginButton.click();
+        LoginPage loginPage = new LoginPage(getDriver());
+        loginPage.loginProcess(requestBody.getEmail(), requestBody.getPassword());
     }
 }
