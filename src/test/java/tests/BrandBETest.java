@@ -33,5 +33,25 @@ public class BrandBETest {
         System.out.println(response2.getStatusLine());
         response2.body().prettyPrint();
         Assert.assertEquals(response2.getStatusCode(), 200);
+
+        // Pasul 3 modificam un brand
+
+        System.out.println("STEP 3: UPDATE BRAND");
+
+        RequestBrandModel requestBody3 = new RequestBrandModel("Teodora", "Test");
+
+        request.body(requestBody3);
+        Response response3 = request.put("/brands/"+responseBody.getId());
+        System.out.println(response3.getStatusLine());
+        response3.body().prettyPrint();
+        Assert.assertEquals(response3.getStatusCode(), 200);
+
+        //Pasul 4 verificam ca s-a modificat brandul
+        System.out.println("STEP 4:CHECK BRAND REQUEST");
+
+        Response response4 = request.get("/brands/"+responseBody.getId());
+        System.out.println(response4.getStatusLine());
+        response4.body().prettyPrint();
+        Assert.assertEquals(response4.getStatusCode(),200);
     }
 }
