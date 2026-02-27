@@ -83,7 +83,6 @@ public class UserService {
         Assert.assertEquals(response.getStatusCode(), 204);
     }
 
-
     private Response performRequest(String requestType, RequestSpecification request, String endpoint) {
         return new RestClient().performRequest(requestType, request, endpoint);
     }

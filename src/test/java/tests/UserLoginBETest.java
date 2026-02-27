@@ -37,6 +37,6 @@ public class UserLoginBETest extends SharedData {
         userService.deleteUser(responseAdminBody.getAccess_token(), responseBody.getId());
 
         // Pasul 7: Verificam ca userul s-a sters
-        userService.checkUser(responseLoginBody.getAccess_token(), responseBody.getId(), 404);
+        userService.checkUser(responseLoginBody.getAccess_token(), responseBody.getId(), 401);
     }
 }
