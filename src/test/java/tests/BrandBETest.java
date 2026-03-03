@@ -7,6 +7,7 @@ import models.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import services.BrandService;
+import services.UserService;
 
 public class BrandBETest {
     @Test
@@ -21,49 +22,21 @@ public class BrandBETest {
         brandService.checkSpecificBrand(responseBody.getId());
 
         // Pasul 3 modificam un brand
-
-        System.out.println("STEP 3: UPDATE BRAND");
-
-        RequestBrandModel requestBody3 = new RequestBrandModel("Teodora", "Test");
-
-        request.body(requestBody3);
-        Response response3 = request.put("/brands/" + responseBody.getId());
-        System.out.println(response3.getStatusLine());
-        response3.body().prettyPrint();
-        Assert.assertEquals(response3.getStatusCode(), 200);
+        RequestBrandModel requestBody2 = new RequestBrandModel("Teodora", "Test");
+        brandService.updateBrand(responseBody.getId(), requestBody2);
 
         //Pasul 4 verificam ca s-a modificat brandul
-        System.out.println("STEP 4:CHECK BRAND REQUEST");
-
-        Response response4 = request.get("/brands/" + responseBody.getId());
-        System.out.println(response4.getStatusLine());
-        response4.body().prettyPrint();
-        Assert.assertEquals(response4.getStatusCode(),200);
+        brandService.checkSpecificBrand(responseBody.getId());
 
         // Pasul 5: Ne logam cu userul admin
-        System.out.println("STEP 5: LOGIN USER ADMIN REQUEST");
-        RequestUserLoginModel requestBody5 = new RequestUserLoginModel("admin@practicesoftwaretesting.com", "welcome01");
-        request.body(requestBody5);
-        Response response5 = request.post("/users/login");
-        System.out.println(response5.getStatusLine());
-        response5.body().prettyPrint();
-        ResponseUserLoginModel responseBody5 = response5.getBody().as(ResponseUserLoginModel.class);
-        Assert.assertEquals(response5.getStatusCode(), 200);
+        UserService userService = new UserService();
+        RequestUserLoginModel requestAdminBody = new RequestUserLoginModel("admin@practicesoftwaretesting.com", "welcome01");
+        ResponseUserLoginModel responseAdminBody = userService.loginUser(requestAdminBody);
 
         // Pasul 6: Stergem brandul
-        System.out.println("STEP 6: DELETE BRAND REQUEST");
-        request.header("Authorization", "Bearer " + responseBody5.getAccess_token());
-        Response response6 = request.delete("/brands/" + responseBody.getId());
-        System.out.println(response6.getStatusLine());
-        response6.body().prettyPrint();
-        Assert.assertEquals(response6.getStatusCode(), 204);
+        brandService.deleteBrand(responseAdminBody.getAccess_token(), responseBody.getId());
 
         // Pasul 7: Verificam ca brandul s-a sters
-        System.out.println("STEP 7: CHECK USER REQUEST");
-        request.header("Authorization", "Bearer " + responseBody5.getAccess_token());
-        Response response7 = request.get("/brands/" + responseBody.getId());
-        System.out.println(response7.getStatusLine());
-        response7.body().prettyPrint();
-        Assert.assertEquals(response7.getStatusCode(), 404);
+        brandService.checkBrandDeleted(responseAdminBody.getAccess_token(), responseBody.getId());
     }
 }
