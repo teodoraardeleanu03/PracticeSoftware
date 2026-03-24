@@ -1,6 +1,5 @@
 package services;
 
-import client.RestClient;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -12,14 +11,14 @@ import types.RequestMethodType;
 import types.ResponseStatusType;
 import utils.LogUtility;
 
-public class BrandService {
+public class BrandService extends CommonService {
     public ResponseBrandModel createBrand(RequestBrandModel requestBody) {
         LogUtility.infoLog("STEP 1: CREATE NEW BRAND");
         RequestSpecification request = RestAssured.given();
         request.body(requestBody);
         Response response = performRequest(RequestMethodType.REQUEST_POST, request, EndpointType.BRAND_CREATE_ENDPOINT);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_CREATED);
         return response.getBody().as(ResponseBrandModel.class);
     }
@@ -31,7 +30,7 @@ public class BrandService {
         request.header("Authorization", "Bearer " + brandId);
         Response response = performRequest(RequestMethodType.REQUEST_GET, request, EndpointType.BRAND_REQUEST_ENDPOINT + brandId);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_OK);
     }
 
@@ -42,7 +41,7 @@ public class BrandService {
         request.header("Authorization", "Bearer " + token);
         Response response = performRequest(RequestMethodType.REQUEST_GET, request, EndpointType.USER_SPECIFIC_ENDPOINT + userId);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), statusCode);
     }
 
@@ -52,7 +51,7 @@ public class BrandService {
         request.body(requestBody);
         Response response = performRequest(RequestMethodType.REQUEST_PUT, request, EndpointType.BRAND_REQUEST_ENDPOINT + brandId);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_OK);
     }
 
@@ -62,7 +61,7 @@ public class BrandService {
         request.header("Authorization", "Bearer " + token);
         Response response = performRequest(RequestMethodType.REQUEST_DELETE, request, EndpointType.BRAND_REQUEST_ENDPOINT + brandId);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_NO_CONTENT);
     }
 
@@ -72,11 +71,7 @@ public class BrandService {
         request.header("Authorization", "Bearer " + token);
         Response response = performRequest(RequestMethodType.REQUEST_GET, request, EndpointType.BRAND_REQUEST_ENDPOINT + brandId);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_NOT_FOUND);
-    }
-
-    private Response performRequest(String requestType, RequestSpecification request, String endpoint) {
-        return new RestClient().performRequest(requestType, request, endpoint);
     }
 }

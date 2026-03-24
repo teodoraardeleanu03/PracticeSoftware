@@ -1,6 +1,5 @@
 package services;
 
-import client.RestClient;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -11,7 +10,7 @@ import types.RequestMethodType;
 import types.ResponseStatusType;
 import utils.LogUtility;
 
-public class UserService {
+public class UserService extends CommonService {
     // aceasta clasa reprezinta metodele de la serviciul User de pe Swagger
     public ResponseUserModel createUser(RequestUserModel requestBody) {
         LogUtility.infoLog("STEP 1: CREATE USER REQUEST");
@@ -20,7 +19,7 @@ public class UserService {
 
         Response response = performRequest(RequestMethodType.REQUEST_POST, request, EndpointType.USER_CREATE_ENDPOINT);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_CREATED);
 
         return response.getBody().as(ResponseUserModel.class);
@@ -35,7 +34,7 @@ public class UserService {
 
         Response response = performRequest(RequestMethodType.REQUEST_POST, request, EndpointType.USER_LOGIN_ENDPOINT);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_OK);
 
         return response.getBody().as(ResponseUserLoginModel.class);
@@ -48,7 +47,7 @@ public class UserService {
         request.header("Authorization", "Bearer " + token);
         Response response = performRequest(RequestMethodType.REQUEST_GET, request, EndpointType.USER_SPECIFIC_ENDPOINT + userId);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), statusCode);
     }
 
@@ -59,7 +58,7 @@ public class UserService {
         request.header("Authorization", "Bearer " + token);
         Response response = performRequest(RequestMethodType.REQUEST_GET, request, EndpointType.USER_LOGOUT_ENDPOINT);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_OK);
     }
 
@@ -70,7 +69,7 @@ public class UserService {
 
         Response response = performRequest(RequestMethodType.REQUEST_POST, request, EndpointType.USER_LOGIN_ENDPOINT);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_OK);
 
         return response.getBody().as(ResponseUserLoginModel.class);
@@ -83,11 +82,7 @@ public class UserService {
         request.header("Authorization", "Bearer " + token);
         Response response = performRequest(RequestMethodType.REQUEST_DELETE, request, EndpointType.USER_SPECIFIC_ENDPOINT + userId);
         LogUtility.infoLog(response.getStatusLine());
-        response.body().prettyPrint();
+        LogUtility.infoLog(response.getBody().asPrettyString());
         Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_NO_CONTENT);
-    }
-
-    private Response performRequest(String requestType, RequestSpecification request, String endpoint) {
-        return new RestClient().performRequest(requestType, request, endpoint);
     }
 }
