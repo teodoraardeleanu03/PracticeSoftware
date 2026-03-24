@@ -7,13 +7,15 @@ import io.restassured.specification.RequestSpecification;
 import models.RequestBrandModel;
 import models.ResponseBrandModel;
 import org.testng.Assert;
+import types.EndpointType;
+import types.RequestMethodType;
 
 public class BrandService {
     public ResponseBrandModel createBrand(RequestBrandModel requestBody) {
         System.out.println("STEP 1: CREATE NEW BRAND");
         RequestSpecification request = RestAssured.given();
         request.body(requestBody);
-        Response response = performRequest("POST", request, "/brands");
+        Response response = performRequest(RequestMethodType.REQUEST_POST, request, EndpointType.BRAND_CREATE_ENDPOINT);
         System.out.println(response.getStatusLine());
         response.body().prettyPrint();
         Assert.assertEquals(response.getStatusCode(), 201);
@@ -25,7 +27,7 @@ public class BrandService {
         RequestSpecification request = RestAssured.given();
 
         request.header("Authorization", "Bearer " + brandId);
-        Response response = performRequest("GET", request, "/brands/" + brandId);
+        Response response = performRequest(RequestMethodType.REQUEST_GET, request, EndpointType.BRAND_REQUEST_ENDPOINT + brandId);
         System.out.println(response.getStatusLine());
         response.body().prettyPrint();
         Assert.assertEquals(response.getStatusCode(), 200);
@@ -36,7 +38,7 @@ public class BrandService {
         RequestSpecification request = RestAssured.given();
 
         request.header("Authorization", "Bearer " + token);
-        Response response = performRequest("GET", request, "/users/" + userId);
+        Response response = performRequest(RequestMethodType.REQUEST_GET, request, EndpointType.USER_SPECIFIC_ENDPOINT + userId);
         System.out.println(response.getStatusLine());
         response.body().prettyPrint();
         Assert.assertEquals(response.getStatusCode(), statusCode);
@@ -46,7 +48,7 @@ public class BrandService {
         System.out.println("STEP 3: UPDATE BRAND");
         RequestSpecification request = RestAssured.given();
         request.body(requestBody);
-        Response response = performRequest("PUT", request, "/brands/" + brandId);
+        Response response = performRequest(RequestMethodType.REQUEST_PUT, request, EndpointType.BRAND_REQUEST_ENDPOINT + brandId);
         System.out.println(response.getStatusLine());
         response.body().prettyPrint();
         Assert.assertEquals(response.getStatusCode(), 200);
@@ -56,7 +58,7 @@ public class BrandService {
         System.out.println("STEP 6: DELETE BRAND REQUEST");
         RequestSpecification request = RestAssured.given();
         request.header("Authorization", "Bearer " + token);
-        Response response = performRequest("DELETE", request, "/brands/" + brandId);
+        Response response = performRequest(RequestMethodType.REQUEST_DELETE, request, EndpointType.BRAND_REQUEST_ENDPOINT + brandId);
         System.out.println(response.getStatusLine());
         response.body().prettyPrint();
         Assert.assertEquals(response.getStatusCode(), 204);
@@ -66,7 +68,7 @@ public class BrandService {
         System.out.println("STEP 7: CHECK BRAND DELETED REQUEST");
         RequestSpecification request = RestAssured.given();
         request.header("Authorization", "Bearer " + token);
-        Response response = performRequest("GET", request, "/brands/" + brandId);
+        Response response = performRequest(RequestMethodType.REQUEST_GET, request, EndpointType.BRAND_REQUEST_ENDPOINT + brandId);
         System.out.println(response.getStatusLine());
         response.body().prettyPrint();
         Assert.assertEquals(response.getStatusCode(), 404);
