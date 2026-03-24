@@ -1,17 +1,17 @@
 package tests;
 
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import models.AddressModel;
 import models.RequestUserModel;
 import models.ResponseUserModel;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 import services.UserService;
 import sharedData.SharedData;
 
+@Feature("@FEATURE-USER")
+@Story("@STORY-USER-123")
 public class UserBETest extends SharedData {
 
     @Test

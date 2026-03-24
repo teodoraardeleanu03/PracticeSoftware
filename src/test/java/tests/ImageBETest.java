@@ -1,10 +1,6 @@
 package tests;
 
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 import models.*;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import services.ImageService;
 

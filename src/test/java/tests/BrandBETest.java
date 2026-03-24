@@ -1,14 +1,14 @@
 package tests;
 
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import models.*;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import services.BrandService;
 import services.UserService;
 
+@Feature("@FEATURE-BRAND")
+@Story("@STORY-BRAND")
 public class BrandBETest {
     @Test
     public void userTest() {

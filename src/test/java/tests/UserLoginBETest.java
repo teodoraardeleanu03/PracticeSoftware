@@ -1,18 +1,18 @@
 package tests;
 
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import models.*;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import services.UserService;
 import sharedData.SharedData;
 import types.ResponseStatusType;
 
+@Feature("@FEATURE-USER")
+@Story("@STORY-USER-321")
 public class UserLoginBETest extends SharedData {
 
-    @Test
+    @Test(description = "TC-111: User creation based on be and login on fe")
     public void userTest() {
         // Pasul 1: Cream un user nou
         AddressModel addressModel = new AddressModel("Street 1", "City", "State", "Country", "1234AA");
