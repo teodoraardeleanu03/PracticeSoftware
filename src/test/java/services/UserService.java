@@ -8,6 +8,7 @@ import models.*;
 import org.testng.Assert;
 import types.EndpointType;
 import types.RequestMethodType;
+import types.ResponseStatusType;
 
 public class UserService {
     // aceasta clasa reprezinta metodele de la serviciul User de pe Swagger
@@ -19,7 +20,7 @@ public class UserService {
         Response response = performRequest(RequestMethodType.REQUEST_POST, request, EndpointType.USER_CREATE_ENDPOINT);
         System.out.println(response.getStatusLine());
         response.body().prettyPrint();
-        Assert.assertEquals(response.getStatusCode(), 201);
+        Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_CREATED);
 
         return response.getBody().as(ResponseUserModel.class);
     }
@@ -34,7 +35,7 @@ public class UserService {
         Response response = performRequest(RequestMethodType.REQUEST_POST, request, EndpointType.USER_LOGIN_ENDPOINT);
         System.out.println(response.getStatusLine());
         response.body().prettyPrint();
-        Assert.assertEquals(response.getStatusCode(), 200);
+        Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_OK);
 
         return response.getBody().as(ResponseUserLoginModel.class);
     }
@@ -58,7 +59,7 @@ public class UserService {
         Response response = performRequest(RequestMethodType.REQUEST_GET, request, EndpointType.USER_LOGOUT_ENDPOINT);
         System.out.println(response.getStatusLine());
         response.body().prettyPrint();
-        Assert.assertEquals(response.getStatusCode(), 200);
+        Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_OK);
     }
 
     public ResponseUserLoginModel loginUser(RequestUserLoginModel requestBody) {
@@ -69,7 +70,7 @@ public class UserService {
         Response response = performRequest(RequestMethodType.REQUEST_POST, request, EndpointType.USER_LOGIN_ENDPOINT);
         System.out.println(response.getStatusLine());
         response.body().prettyPrint();
-        Assert.assertEquals(response.getStatusCode(), 200);
+        Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_OK);
 
         return response.getBody().as(ResponseUserLoginModel.class);
     }
@@ -82,7 +83,7 @@ public class UserService {
         Response response = performRequest(RequestMethodType.REQUEST_DELETE, request, EndpointType.USER_SPECIFIC_ENDPOINT + userId);
         System.out.println(response.getStatusLine());
         response.body().prettyPrint();
-        Assert.assertEquals(response.getStatusCode(), 204);
+        Assert.assertEquals(response.getStatusCode(), ResponseStatusType.RESPONSE_NO_CONTENT);
     }
 
     private Response performRequest(String requestType, RequestSpecification request, String endpoint) {
